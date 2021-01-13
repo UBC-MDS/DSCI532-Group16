@@ -13,3 +13,8 @@ Employee turnover due to poor mental health costs companies a lot of money every
 
 
 ## Research questions and usage scenarios
+ 
+John is a Human Resources Director for an international technology company and wants to understand the attitudes towards mental health and frequency of mental health disorders in the tech industry. This will help him make decisions to increase company satisfaction among employees and attract better talent by improving mental health benefits and resources in the company. He wants to be able to [explore] a dataset and [identify] attitudes and frequency of mental health illness in different geographic locations and among different demographic variables. 
+
+When John uses this dashboard he will be able to see the variables in this dataset such as age, gender and geographic location and be able to filter it to best suit his needs depending on the offices or groups he is focused on. When he filters by geographic location and age he may notice that older workers in European countries have less knowledge of company provided resources for mental health compared to their North American counterparts. As this dataset is in regards to the tech industry itself and not his company John could conduct an internal study to see if this is also the case in his offices. Or, among other possibilities, he could come up with a strategy to help make known these resources to those employees in his European offices. Regardless of what John chooses to do, this dashboard will help aid him in improving mental health among workers in the company.
+
