@@ -10,7 +10,14 @@ Employee turnover due to poor mental health costs companies a lot of money every
 
 ## Description of the data
 
+We will be visualizing a dataset of 1259 employee mental health surveys in companies across 48 countries from a survey completed in 2014. Each survey describes:
 
+- the employee (age, gender, country and state they live in), 
+- employee mental illness history (family_history, treatment and work_interfere)
+- employment status (self_employed and remote_work), 
+- company information (no_employees and tech_company), 
+- company healthcare (benefits, care_options, wellness_programs, seek_help, anonymity, leave, mentalhealthconsequence, physhealthconsequence, mentalvsphysical and obs_consequence), and
+- privacy (coworkers, supervisor, mentalhealthinterview and physhealthinterview)
 
 ## Research questions and usage scenarios
  
