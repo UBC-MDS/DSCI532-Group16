@@ -1,8 +1,8 @@
-# DSCI532-Group16 README
+# Mental Health Awareness Dashboard
 
 ![app sketch](images/app_sketch_v1.png)
 
-The app is a dashboard to more efficiently consume the mental illness survey data and drive insights into diffent areas of mental illness awareness in tech companies around the world. After landing on this dashbaord, users can filter generic company, employee and mental health related filters on the left hand side. For example, they can filter by region and age group. The filtering will then drive the visualizations on the tabbed right side of the app.
+The app is a dashboard to more efficiently consume the mental illness survey data and drive insights into different areas of mental illness awareness in tech companies around the world. After landing on this dashbaord, users can filter generic company, employee and mental health related filters on the left hand side. For example, they can filter by region and age group. The filtering will then drive the visualizations on the tabbed right side of the app.
 
 Each tab will then answer specific topics that our target audience might be interested in. For example, the tabs could include:
 - Awareness (of mental illness)
