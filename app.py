@@ -2,6 +2,11 @@ import dash
 import dash_html_components as html
 import dash_bootstrap_components as dbc
 import dash_core_components as dcc
+import altair as alt
+import pandas as pd
+from dash.dependencies import Input, Output
+
+data = pd.read_csv('data/processed/processed_survey.csv')
 
 app = dash.Dash(__name__, external_stylesheets = [dbc.themes.BOOTSTRAP])
 app.layout = html.Div([
@@ -9,11 +14,7 @@ app.layout = html.Div([
     dbc.Tabs([
         # Tab 1
         dbc.Tab([
-            # Age Slider
-            html.H1('Age Slider'),
-            dcc.RangeSlider(min = 0, max = 5, value = [2,3], 
-            marks = {0: '0', 5: '5'}),
-            
+
             # Country Filter
             dbc.Row([
                 dbc.Col([
@@ -81,10 +82,21 @@ app.layout = html.Div([
                     {'label': 'Wyoming', 'value': 'WY'}],
                     value='AL', multi=True)]),
                 ], md=3)
-            ])
+            ]),
             # Gender Selection
 
             # Self Employed
+
+            #Options Barplot
+            html.Iframe(
+                id = 'options_barplot', 
+                style = {'border-width' : '0', 'width' : '100%', 'height': '400px'}),
+            
+            # Age Slider
+            html.H2('Age Slider'),
+            dcc.RangeSlider(id = 'age_slider', min = 18, max = 75, value = [18,75], 
+            marks = {18:'18', 20:'20', 30:'30', 40:'40', 50:'50', 60:'60', 70:'70', 75:'75'}),
+
             ], label = 'Tab One'),
 
 
@@ -92,6 +104,16 @@ app.layout = html.Div([
         dbc.Tab('Other text', label = 'Tab Two')
     ])
 ])
+
+@app.callback(
+    Output('options_barplot', 'srcDoc'),
+    Input('age_slider', 'value'))
+def plot_options_bar(age_chosen):
+    chart = alt.Chart(data[(data['Age'] >= age_chosen[0]) & (data['Age'] <= age_chosen[1])], 
+    title = "Do you know the options for mental health care your employer provides?").mark_bar().encode(
+        x = alt.X('count()'),
+        y = alt.Y('care_options', sort = '-x', title = "Response"))
+    return chart.to_html()
 
 if __name__ == '__main__':
     app.run_server(debug = True)
