@@ -10,10 +10,14 @@ from vega_datasets import data
 
 state_map = alt.topo_feature(data.us_10m.url, 'states')
 
-data = pd.read_csv('data/processed/processed_survey.csv')
+data = pd.read_csv('../data/processed/processed_survey.csv')
 
 
 app = dash.Dash(__name__, external_stylesheets = [dbc.themes.BOOTSTRAP])
+
+#Add Heroku server object
+server = app.server
+
 app.layout = html.Div([
     html.H1('Mental Health Survey Dashboard'),
     dbc.Tabs([
