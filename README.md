@@ -11,11 +11,44 @@ Each tab will then answer specific topics that our target audience might be inte
 
 Within each tab, we may include different visualizations that will tell a story around each topic. For example, the user may try to understand mental illness awareness by state by going to the Awareness tab and then toggling different states in the US.
 
+## Dependencies
 
-# Heroku Details (TODO: Clean up below)
+### Python
 
-(532) jufu@zimba:~/UBC_MDS/courses/block04/DSCI532-Group16$ heroku create it-mental-health-dash
- ›   Warning: heroku update available from 7.47.6 to 7.47.7.
-Creating ⬢ it-mental-health-dash... done
-https://it-mental-health-dash.herokuapp.com/ | https://git.heroku.com/it-mental-health-dash.git
+We are providing you with a `pip` environment file which is available [here](requirements.txt). You can download this file and install dependencies in your desired environment.
 
+```
+pip install -r requirements.txt
+```
+
+```
+pandas
+gunicorn
+altair
+dash==1.18.1
+dash_bootstrap_components
+plotly==4.14.3
+vega_datasets
+```
+
+# Heroku Deployment
+
+This dashboard is hosted on Heroku: https://it-mental-health-dash.herokuapp.com/ 
+The heroku repository URL is: https://git.heroku.com/it-mental-health-dash.git
+
+## Deploy on to your own Heroku Account
+Once you've cloned this github repository, you can do the following from the root of the repo:
+```bash
+heroku create [app_name]
+git push heroku main
+heroku ps:scale web=1
+```
+## If you make changes and want to redeply to Heroku
+Note this does not include details on fork and branch handling in github.
+```bash
+git status
+git add .
+git commit -m "change description"
+git push heroku main
+heroku ps:scale web=1
+```
