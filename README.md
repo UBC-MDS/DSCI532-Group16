@@ -11,6 +11,41 @@ Each tab will then answer specific topics that our target audience might be inte
 
 Within each tab, we may include different visualizations that will tell a story around each topic. For example, the user may try to understand mental illness awareness by state by going to the Awareness tab and then toggling different states in the US.
 
+
+## Usage
+
+There are two suggested ways to run this analysis:
+
+### 1. Deploy and run on Heroku
+
+This dashboard is hosted on Heroku: https://it-mental-health-dash.herokuapp.com/ 
+The heroku repository URL is: https://git.heroku.com/it-mental-health-dash.git
+
+#### Deploy on to your own Heroku Account
+Once you've cloned this github repository, you can do the following from the root of the repo:
+```bash
+heroku create [app_name]
+git push heroku main
+heroku ps:scale web=1
+```
+#### If you make changes and want to redeply to Heroku
+Note this does not include details on fork and branch handling in github.
+```bash
+git status
+git add .
+git commit -m "change description"
+git push heroku main
+heroku ps:scale web=1
+```
+### 2. Run without Heroku
+
+After cloning this repository and installing the python dependencies below, run the following from the root of this repo:
+
+```bash
+python src/app.py
+```
+
+
 ## Dependencies
 
 ### Python
@@ -31,24 +66,4 @@ plotly==4.14.3
 vega_datasets
 ```
 
-# Heroku Deployment
 
-This dashboard is hosted on Heroku: https://it-mental-health-dash.herokuapp.com/ 
-The heroku repository URL is: https://git.heroku.com/it-mental-health-dash.git
-
-## Deploy on to your own Heroku Account
-Once you've cloned this github repository, you can do the following from the root of the repo:
-```bash
-heroku create [app_name]
-git push heroku main
-heroku ps:scale web=1
-```
-## If you make changes and want to redeply to Heroku
-Note this does not include details on fork and branch handling in github.
-```bash
-git status
-git add .
-git commit -m "change description"
-git push heroku main
-heroku ps:scale web=1
-```
