@@ -12,5 +12,10 @@ Each tab will then answer specific topics that our target audience might be inte
 Within each tab, we may include different visualizations that will tell a story around each topic. For example, the user may try to understand mental illness awareness by state by going to the Awareness tab and then toggling different states in the US.
 
 
+# Heroku Details (TODO: Clean up below)
 
+(532) jufu@zimba:~/UBC_MDS/courses/block04/DSCI532-Group16$ heroku create it-mental-health-dash
+ ›   Warning: heroku update available from 7.47.6 to 7.47.7.
+Creating ⬢ it-mental-health-dash... done
+https://it-mental-health-dash.herokuapp.com/ | https://git.heroku.com/it-mental-health-dash.git
 
