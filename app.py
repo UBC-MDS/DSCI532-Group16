@@ -5,8 +5,13 @@ import dash_core_components as dcc
 import altair as alt
 import pandas as pd
 from dash.dependencies import Input, Output
+from vega_datasets import data
+
+
+state_map = alt.topo_feature(data.us_10m.url, 'states')
 
 data = pd.read_csv('data/processed/processed_survey.csv')
+
 
 app = dash.Dash(__name__, external_stylesheets = [dbc.themes.BOOTSTRAP])
 app.layout = html.Div([
@@ -19,6 +24,7 @@ app.layout = html.Div([
             dbc.Row([
                 dbc.Col([
             html.Label(['Country Selection', dcc.Dropdown(
+                id = 'country_selector',
                 options=[
                     {'label': 'United States', 'value': 'United States'},
                     {'label': 'Canada', 'value': 'Canada'}],
@@ -29,6 +35,7 @@ app.layout = html.Div([
             dbc.Row([
                 dbc.Col([
             html.Label(['State Selection', dcc.Dropdown(
+                id = 'state_selector',
                 options=[
                     {'label': 'Alabama', 'value': 'AL'},
                     {'label': 'Alaska', 'value': 'AK'},
@@ -83,6 +90,11 @@ app.layout = html.Div([
                     value='AL', multi=True)]),
                 ], md=3)
             ]),
+            # Map plot
+            html.Iframe(
+                id = 'map_frame', 
+                style = {'border-width' : '0', 'width' : '100%', 'height': '400px'}),
+
             # Gender Selection
 
             # Self Employed
@@ -114,6 +126,24 @@ def plot_options_bar(age_chosen):
         x = alt.X('count()'),
         y = alt.Y('care_options', sort = '-x', title = "Response"))
     return chart.to_html()
+
+map_click = alt.selection_multi()
+
+@app.callback(
+    Output('map_frame', 'srcDoc'),
+    Input('state_selector', 'value'))
+def plot_map(state_chosen):
+    map = (alt.Chart(state_map, 
+        title = 'Frequency of mental health condition').mark_geoshape().transform_lookup(
+        lookup='id',
+        from_=alt.LookupData(data, 'stateID', ['has_condition']))
+        .encode(
+        color='has_condition:Q',
+        opacity=alt.condition(map_click, alt.value(1), alt.value(0.2)),
+        tooltip=['state:N', 'has_condition:Q'])
+        .add_selection(map_click)
+        .project(type='albersUsa'))
+    return map.to_html()
 
 if __name__ == '__main__':
     app.run_server(debug = True)
