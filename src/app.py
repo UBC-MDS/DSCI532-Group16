@@ -67,7 +67,33 @@ sidebar = html.Div(
         # Age Slider
         html.Label(['Age']),
         dcc.RangeSlider(id = 'age_slider', min = 18, max = 75, value = [18,75], 
-            marks = {18:'18', 20:'20', 30:'30', 40:'40', 50:'50', 60:'60', 70:'70', 75:'75'}),
+            marks = {18:'18', 30:'30', 40:'40', 50:'50', 60:'60', 70:'70', 75:'75'}),
+
+        # Gender Filter Checklist
+        html.Label(['Gender']),
+        dcc.Checklist(
+            id = 'gender_checklist',
+            options = [
+                {'label' : 'Male', 'value' : 'Male'},
+                {'label' : 'Female', 'value' : 'Female'},
+                {'label' : 'Other', 'value' : 'Other'}],
+            value = ['Male', 'Female', 'Other'],
+            labelStyle = {'display': 'inline_block'}
+        ),
+
+        # Self-Employed Filter Checklist
+        html.Label(['Self-Employed']),
+        dcc.Checklist(
+            id = 'self_emp_checklist',
+            options = [
+                {'label' : 'Yes', 'value' : 'Yes'},
+                {'label' : 'No', 'value' : 'No'},
+                {'label' : 'N/A', 'value' : 'N/A'}],
+            value = ['Yes', 'No', 'N/A'],
+            labelStyle = {'display': 'inline_block'}
+            
+        )
+
     ],
     style=SIDEBAR_STYLE,
 )
@@ -124,9 +150,15 @@ app.layout = html.Div([
 @app.callback(
     Output('options_barplot', 'srcDoc'),
     Input('age_slider', 'value'),
-    Input('state_selector','value'))
-def plot_options_bar(age_chosen, state_chosen):
-    chart = alt.Chart(data[(data['Age'] >= age_chosen[0]) & (data['Age'] <= age_chosen[1]) & (data['state'] == state_chosen )], 
+    Input('state_selector','value'),
+    Input('gender_checklist', 'value'),
+    Input('self_emp_checklist', 'value'))
+def plot_options_bar(age_chosen, state_chosen, gender_chosen, self_emp_chosen):
+    chart = alt.Chart(data[(data['Age'] >= age_chosen[0]) 
+    & (data['Age'] <= age_chosen[1]) 
+    & (data['state'] == state_chosen )
+    & (data['Gender'].isin(gender_chosen))
+    & (data['self_employed'].isin(self_emp_chosen))], 
     title = "Do you know the options for mental health care your employer provides?").mark_bar().encode(
         x = alt.X('count()'),
         y = alt.Y('care_options', sort = '-x', title = ""))
@@ -136,9 +168,15 @@ def plot_options_bar(age_chosen, state_chosen):
 @app.callback(
     Output('iframe_discuss_w_supervisor', 'srcDoc'),
     Input('age_slider', 'value'),
-    Input('state_selector','value'))
-def plot_discuss_w_supervisor(age_chosen, state_chosen):
-    filtered_data = data[(data['Age'] >= age_chosen[0]) & (data['Age'] <= age_chosen[1]) & (data['state'] == state_chosen )]
+    Input('state_selector','value'),
+    Input('gender_checklist', 'value'),
+    Input('self_emp_checklist', 'value'))
+def plot_discuss_w_supervisor(age_chosen, state_chosen, gender_chosen, self_emp_chosen):
+    filtered_data = data[(data['Age'] >= age_chosen[0]) 
+    & (data['Age'] <= age_chosen[1]) 
+    & (data['state'] == state_chosen )
+    & (data['Gender'].isin(gender_chosen))
+    & (data['self_employed'].isin(self_emp_chosen))]
     supervisor_boxplot = alt.Chart(filtered_data, 
         title='Would employee be willing to discuss mental health issues with supervisor?').mark_boxplot().encode(
             x=alt.X('Age',  scale=alt.Scale(domain=[18, 80])), 
