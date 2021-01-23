@@ -12,4 +12,6 @@ For future milestones, we aim to implement the following improvements to the das
 
 -   Addition of a few more meaningful charts of different types to bring to life more analysis from the data.
 
+-   Update the drop down to be a multi-selection dropdown.
+
 -   2 way integration between map and some charts, ie when states are selected from the map, the chart use those selections as a filter.
