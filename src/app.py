@@ -51,18 +51,6 @@ sidebar = html.Div(
                         value='AL', multi=False)]),
             ], 
             style={"width": "100%"}),
-        # # Country Filter # Hidden because we're filtered on US only
-        # html.Div([
-        #     html.Label(['Country Selection', 
-        #     dcc.Dropdown(
-        #         id = 'country_selector',
-        #         options=[
-        #             {'label': 'United States', 'value': 'United States'},
-        #             {'label': 'Canada', 'value': 'Canada'}],
-        #             value='United States', multi=True)
-        #         ])
-        #     ], 
-        #     style={"width": "100%"}),
 
         # Age Slider
         html.Label(['Age']),
@@ -105,7 +93,7 @@ CONTENT_STYLE = {
     "padding": "2rem 1rem",
 }
 content = html.Div([
-           html.H2('IT Employee Mental Health Survey in the US by State'),
+           html.H2('Employee Mental Health Survey in the Tech Industry'),
             dbc.Tabs([
                 # Tab 1
                 dbc.Tab([
@@ -189,18 +177,30 @@ def plot_discuss_w_supervisor(age_chosen, state_chosen, gender_chosen, self_emp_
 
 map_click = alt.selection_multi()
 
+
 @app.callback(
     Output('map_frame', 'srcDoc'),
-    Input('state_selector', 'value'))
-def plot_map(state_chosen):
+    Input('age_slider', 'value'),
+    Input('gender_checklist', 'value'),
+    Input('self_emp_checklist', 'value'))
+def plot_map(age_chosen, gender_chosen, self_emp_chosen):
+
+    filtered_data = data[(data['Age'] >= age_chosen[0]) 
+    & (data['Age'] <= age_chosen[1])
+    & (data['Gender'].isin(gender_chosen))
+    & (data['self_employed'].isin(self_emp_chosen))]
+
+    frequencydf = filtered_data.groupby('id')['has_condition'].transform('sum')
+    data['Mental_health_count'] = frequencydf
+    
     map = (alt.Chart(state_map, 
         title = 'Frequency of mental health condition').mark_geoshape().transform_lookup(
         lookup='id',
-        from_=alt.LookupData(data, 'stateID', ['has_condition']))
+        from_=alt.LookupData(data, 'id', ['Mental_health_count']))
         .encode(
-        color='has_condition:Q',
+        color='Mental_health_count:Q',
         opacity=alt.condition(map_click, alt.value(1), alt.value(0.2)),
-        tooltip=['state:N', 'has_condition:Q'])
+        tooltip=['state:N', 'Mental_health_count:Q'])
         .add_selection(map_click)
         .project(type='albersUsa'))
     return map.to_html()
