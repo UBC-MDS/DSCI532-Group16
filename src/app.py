@@ -9,16 +9,15 @@ from vega_datasets import data
 
 
 #Dash App Initialize
-app = dash.Dash(__name__, external_stylesheets = [dbc.themes.BOOTSTRAP])
+app = dash.Dash(__name__, external_stylesheets = ['https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/lux/bootstrap.min.css'])
+app.title = 'Employee Mental Health Survey in the US'
 #Add Heroku server object
 server = app.server
 
-
-
 # Data Prep
 state_map = alt.topo_feature(data.us_10m.url, 'states')
-
 data = pd.read_csv('data/processed/processed_survey.csv')
+
 #States dataframe for filter
 df_states = data[['state_fullname', 'state']].drop_duplicates(subset=['state_fullname','state']).dropna()
 df_states = df_states.sort_values(by='state_fullname')
@@ -29,56 +28,60 @@ SIDEBAR_STYLE = {
     "top": 0,
     "left": 0,
     "bottom": 0,
-    "width": "20rem",
+    "width": "18rem",
     "padding": "2rem 1rem",
     "background-color": "#f8f9fa",
 }
 
 sidebar = html.Div(
     [
-        html.H4("Filters", className="display-5"),
+        html.H3("Filters", className="display-5"),
         html.Hr(),
         html.P(
             ""
         ),
+        html.Br(),
         # State Filter
-        html.Div([
-                html.Label(['State Selection', 
-                dcc.Dropdown(
-                    id = 'state_selector',
-                    options=[{'label': state_full, 'value': state_abbrev} 
-                        for state_full, state_abbrev in list(zip(df_states.state_fullname, df_states.state))],
-                        value='AL', multi=False)]),
-            ], 
-            style={"width": "100%"}),
-
+        
+        html.H4(html.Label(['State Selection'])), 
+        dcc.Dropdown(
+            id = 'state_selector',
+            options=[{'label': state_full, 'value': state_abbrev} for state_full, state_abbrev in list(zip(df_states.state_fullname, df_states.state))],
+            value='AL', 
+            multi=False,
+            style={'height': '30px', 'width': '250px'}
+            ),                    
+                
+        
+        html.Br(),
         # Age Slider
-        html.Label(['Age']),
+        html.H4(html.Label(['Age'])),
         dcc.RangeSlider(id = 'age_slider', min = 18, max = 75, value = [18,75], 
             marks = {18:'18', 30:'30', 40:'40', 50:'50', 60:'60', 70:'70', 75:'75'}),
-
+        
+        html.Br(),
         # Gender Filter Checklist
-        html.Label(['Gender']),
+        html.H4(html.Label(['Gender'])),
         dcc.Checklist(
             id = 'gender_checklist',
             options = [
                 {'label' : 'Male', 'value' : 'Male'},
-                {'label' : 'Female', 'value' : 'Female'},
-                {'label' : 'Other', 'value' : 'Other'}],
+                {'label' : 'Female  ', 'value' : 'Female'},
+                {'label' : 'Other  ', 'value' : 'Other'}],
             value = ['Male', 'Female', 'Other'],
-            labelStyle = {'display': 'inline_block'}
+            labelStyle = dict(display='block')
         ),
-
+        html.Br(),
         # Self-Employed Filter Checklist
-        html.Label(['Self-Employed']),
+        html.H4(html.Label(['Self-Employed'])),
         dcc.Checklist(
             id = 'self_emp_checklist',
             options = [
-                {'label' : 'Yes', 'value' : 'Yes'},
-                {'label' : 'No', 'value' : 'No'},
-                {'label' : 'N/A', 'value' : 'N/A'}],
-            value = ['Yes', 'No', 'N/A'],
-            labelStyle = {'display': 'inline_block'}
+                {'label' : 'Yes  ', 'value' : 'Yes'},
+                {'label' : 'No  ', 'value' : 'No'},
+                {'label' : 'N/A  ', 'value' : 'N/A'}],
+            value = ['Yes', 'No', 'N/A'],            
+            labelStyle = dict(display='block')
             
         )
 
@@ -88,36 +91,56 @@ sidebar = html.Div(
 
 
 CONTENT_STYLE = {
-    "margin-left": "20rem",
+    "margin-left": "18rem",
     "margin-right": "2rem",
     "padding": "2rem 1rem",
 }
 content = html.Div([
-           html.H2('Employee Mental Health Survey in the Tech Industry'),
+           html.H2('Employee Mental Health Survey in the US'),
             dbc.Tabs([
                 # Tab 1
                 dbc.Tab([
 
+
                     # Map plot
-                    html.Iframe(
-                        id = 'map_frame', 
-                        style = {'border-width' : '0', 'width' : '100%', 'height': '400px'}),
+                    dbc.Row(
+                            dbc.Col(
+                                
+                                html.Iframe(
+                                    id = 'map_frame', 
+                                    style = {'border-width' : '0', 'width' : '100%', 'height': '400px'}),
+                                style={'margin-bottom':'50px', 'textAlign':'center'} ,                                    
+                                width=True, 
+                                ),style={'textAlign': 'center'}
+                    ),
 
-                    #Options Barplot
-                    html.Iframe(
-                        id = 'options_barplot', 
-                        style = {'border-width' : '0', 'width' : '100%', 'height': '200px'}),         
 
-                    #Discuss mental issues with supervisor boxplot
-                    html.Iframe(
-                        id = 'iframe_discuss_w_supervisor', 
-                        style = {'border-width' : '0', 'width' : '100%', 'height': '200px'}),            
+                    dbc.Row([
+                        dbc.Col(
+                            #Options Barplot
+                            html.Iframe(
+                                id = 'options_barplot', 
+                                style = {'border-width' : '0', 'width' : '100%', 'height': '100%'})
+                        ), 
+                    ]),
+                    dbc.Row([
+                        dbc.Col(
+                            #Discuss mental issues with supervisor boxplot
+                            html.Iframe(
+                                id = 'iframe_discuss_w_supervisor', 
+                                style = {'border-width' : '0', 'width' : '100%', 'height': '100%'}),            
+                            
+                        )
+                        
+                    ]),   
+                      
+
                     
 
                     ],
                     label = 'HR Prototype v0.01'),
 
-
+                
                 #Tab 2
                 #dbc.Tab('Other text', label = 'Tab Two')
             ])], 
@@ -147,9 +170,10 @@ def plot_options_bar(age_chosen, state_chosen, gender_chosen, self_emp_chosen):
     & (data['state'] == state_chosen )
     & (data['Gender'].isin(gender_chosen))
     & (data['self_employed'].isin(self_emp_chosen))], 
-    title = "Do you know the options for mental health care your employer provides?").mark_bar().encode(
+    title = "Do you know the options for mental healthcare your employer provides?").mark_bar().encode(
         x = alt.X('count()'),
         y = alt.Y('care_options', sort = '-x', title = ""))
+
     return chart.to_html()
 
 
@@ -202,7 +226,10 @@ def plot_map(age_chosen, gender_chosen, self_emp_chosen):
         opacity=alt.condition(map_click, alt.value(1), alt.value(0.2)),
         tooltip=['state:N', 'Mental_health_count:Q'])
         .add_selection(map_click)
-        .project(type='albersUsa'))
+        .project(type='albersUsa')).properties(
+                                width=700,
+                                height=350
+                            )
     return map.to_html()
 
 if __name__ == '__main__':
