@@ -51,18 +51,6 @@ sidebar = html.Div(
                         value='AL', multi=False)]),
             ], 
             style={"width": "100%"}),
-        # # Country Filter # Hidden because we're filtered on US only
-        # html.Div([
-        #     html.Label(['Country Selection', 
-        #     dcc.Dropdown(
-        #         id = 'country_selector',
-        #         options=[
-        #             {'label': 'United States', 'value': 'United States'},
-        #             {'label': 'Canada', 'value': 'Canada'}],
-        #             value='United States', multi=True)
-        #         ])
-        #     ], 
-        #     style={"width": "100%"}),
 
         # Age Slider
         html.Label(['Age']),
@@ -105,7 +93,7 @@ CONTENT_STYLE = {
     "padding": "2rem 1rem",
 }
 content = html.Div([
-           html.H2('IT Employee Mental Health Survey in the US by State'),
+           html.H2('Employee Mental Health Survey in the Tech Industry'),
             dbc.Tabs([
                 # Tab 1
                 dbc.Tab([
