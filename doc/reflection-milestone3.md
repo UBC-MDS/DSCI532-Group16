@@ -8,7 +8,7 @@ We have a map visualization that displays the count of mental health conditions 
 
 We have two other charts at the moment that bring to life two questions that were asked in the survey. There are four different filtering options in the form of a drop down for state, a range slider for age, and two checkbox filters for gender and self-employed status. 
 
-All four filters are used as callbacks for the two charts and 1 map. The age, gender and self-employed filters are also used as callbacks for the map.
+All four filters are used as callbacks for the two charts and one map. The age, gender and self-employed filters are also used as callbacks for the map.
 
 ### App Strengths and Limitations
 
